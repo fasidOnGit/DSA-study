@@ -30,3 +30,13 @@ class NumArray {
  * var obj = new NumArray(nums)
  * var param_1 = obj.sumRange(left,right)
  */
+
+/**
+ * Math Formula for Prefix Sum
+ * Building the prefix sum array:
+ * prefixSum[i] = prefixSum[i-1] + nums[i]  
+ * 
+ * Querying the prefix sum array:
+ * sumRange(left, right) = prefixSum[right] - prefixSum[left - 1]
+ * 
+ */
