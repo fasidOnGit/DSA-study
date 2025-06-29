@@ -14,7 +14,25 @@ We need to find the total number of continuous subarrays whose sum equals `k`. A
 
 ## Approach
 
-We maintain a running prefix sum while iterating through the array. At each index `j`, we calculate the current prefix sum `prefixSum`. To check if there is a subarray ending at `j` whose sum is `k`, we look for `prefixSum - k` in a hash map. This map keeps track of how many times each prefix sum has occurred. If `prefixSum - k` exists in the map, it means there are one or more subarrays ending at `j` that sum to `k`, and we increment our count accordingly. Finally, we update the map with the current prefix sum.
+We began with a brute-force strategy that involved checking all subarrays using nested loops. However, we observed that this approach repeatedly recalculates sums for overlapping subarrays, leading to inefficiencies. To address this, we introduced the concept of prefix sums.
+
+Using the prefix sum formula:
+
+```
+sum(i, j) = prefixSum[j] - prefixSum[i - 1]
+```
+
+and the condition that `sum(i, j) = k`, we rearranged it to:
+
+```
+prefixSum[i - 1] = prefixSum[j] - k
+```
+
+This gives us a key insight: for each index `j`, we treat it as the end of a potential subarray and check if there’s a previously seen prefix sum that, when subtracted from the current prefix sum, equals `k`. If such a prefix sum exists, it means there’s a valid subarray ending at `j` that sums to `k`.
+
+To implement this efficiently, we use a hash map to keep track of all previously seen prefix sums and how many times each has occurred. This is important because multiple subarrays can end at the same index and sum to `k` — for instance, overlapping subarrays in an input like `[-1000, 1000, 1, 3]` with `k = 4`. Here, both `[-1000, 1000, 1, 3]` and `[1, 3]` are valid subarrays ending at the same index. Tracking the count ensures we account for all such possibilities.
+
+This approach reduces the time complexity from O(n²) to O(n) using a single pass and a hash map lookup.
 
 ---
 
