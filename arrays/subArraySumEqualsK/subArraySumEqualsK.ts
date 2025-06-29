@@ -38,3 +38,23 @@ function subarraySumBruteForce(nums: number[], k: number): number {
 
   return totalNumberOfSubArray;  
 };
+
+function subarraySum(nums: number[], k: number): number {
+    let count = 0;
+    let prefixSum = 0;
+    const prefixMap = new Map<number, number>();
+    prefixMap.set(0, 1); // base case: prefix sum 0 occurs once
+
+    for (let j = 0; j < nums.length; j++) {
+        prefixSum += nums[j];
+
+        const complement = prefixSum - k;
+        if (prefixMap.has(complement)) {
+            count += prefixMap.get(complement)!;
+        }
+
+        prefixMap.set(prefixSum, (prefixMap.get(prefixSum) || 0) + 1);
+    }
+
+    return count;
+}
